@@ -21,6 +21,8 @@
 
     <link rel="stylesheet" href="{{ asset('dashboard_admin/assets/plugins/owlcarousel/owl.carousel.min.css')}}">
 
+    <link rel="stylesheet" href="{{ asset('dashboard_admin/assets/plugins/fullcalendar/fullcalendar.min.css')}}">
+
     <link rel="stylesheet" href="{{ asset('dashboard_admin/assets/css/bootstrap-datetimepicker.min.css')}}">
 
     <link rel="stylesheet" href="{{ asset('dashboard_admin/assets/css/dataTables.bootstrap4.min.css')}}">
@@ -284,6 +286,9 @@
 
     <script src="{{asset('dashboard_admin/assets/js/moment.min.js')}}"></script>
     <script src="{{asset('dashboard_admin/assets/js/bootstrap-datetimepicker.min.js')}}"></script>
+
+    <script src="{{asset('dashboard_admin/assets/plugins/fullcalendar/fullcalendar.min.js')}}"></script>
+    <script src="{{asset('dashboard_admin/assets/plugins/fullcalendar/jquery.fullcalendar.js')}}"></script>
 
     <script src="{{asset('dashboard_admin/assets/plugins/owlcarousel/owl.carousel.min.js')}}"></script>
 

@@ -113,7 +113,7 @@ class LeaveRequestController extends Controller
 
                 LeaveApproval::create([
                     'leave_request_id' => $leave_request->id,
-                    'leave_request_id' => User::with('employee')->find($request->user_id)->employee->parent_id,
+                    'supervisor_id' => User::with('employee')->find($request->user_id)->employee->parent_id,
                 ]);
             });
         }
@@ -219,6 +219,7 @@ class LeaveRequestController extends Controller
             'users.employee.rank',
             'users.employee.position',
             'users.employee.parent.employee.position',
+            'users.leave_balance',
         )->findOrFail($id);
         
         // return $leave_request;
@@ -240,6 +241,14 @@ class LeaveRequestController extends Controller
         $templatePath = public_path('/format_cuti/' . $format);
         $phpWord = new \PhpOffice\PhpWord\TemplateProcessor($templatePath);
 
+        // $phpWord->cloneRow('year_leave', count($leave_request->users->leave_balance));
+        $year_leave = '';
+        $remaining_leave = ''; 
+        foreach ($leave_request->users->leave_balance as $row) {
+            $year_leave .= $row['year'].'<w:br/>';
+            $remaining_leave .= $row['remaining_leave'].'<w:br/>';
+        }
+
         $phpWord->setValues([
             'date' => date('d M Y', strtotime($leave_request->updated_at)),
             'type_leave' => strtoupper($leave_request->type_leave->type_leave),
@@ -257,6 +266,8 @@ class LeaveRequestController extends Controller
             'start_date' => date('d M Y', strtotime($leave_request->start_date)),
             'end_date' => date('d M Y', strtotime($leave_request->end_date)),
             'address' => $leave_request->address,
+            'year_leave' => $year_leave,
+            'leave' => $remaining_leave,
         ]);
 
         // Save the filled template to a temporary DOCX file

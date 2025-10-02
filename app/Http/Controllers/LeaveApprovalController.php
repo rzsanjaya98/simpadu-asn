@@ -38,12 +38,12 @@ class LeaveApprovalController extends Controller
         //     return back();
         // }
 
-        if(Auth::user()->role_id != 3){
+        if (Auth::user()->role_id != 3) {
             $data_user = User::with('employee.position')->find(Auth::id());
             if ($data_user->employee->position != null) {
                 if ($data_user->employee->position?->type_position->level_position <= '4') {
                     $leave_approval_supervisor = LeaveApproval::with('leave_request.type_leave', 'leave_request.users.employee')->where('supervisor_id', Auth::id())->orderBy('id', 'desc')->get();
-                    if($data_user->employee->position?->type_position->level_position === '2'){
+                    if ($data_user->employee->position?->type_position->level_position === '2') {
                         $leave_approval_leader = LeaveApproval::with('leave_request.type_leave', 'leave_request.users.employee')->orderBy('id', 'desc')->get();
                         return view('admin_dashboard.leave.leave_approvals', ['menu_name' => $menu_name, 'leave_approval_supervisor' => $leave_approval_supervisor, 'leave_approval_leader' => $leave_approval_leader]);
                     }
@@ -54,10 +54,10 @@ class LeaveApprovalController extends Controller
                 //     $leave_approval = LeaveApproval::with('leave_request.type_leave', 'leave_request.users.employee')->orderBy('id', 'desc')->get();
                 //     return view('admin_dashboard.leave.leave_approval_leader', ['menu_name' => $menu_name, 'leave_approval' => $leave_approval]);
                 // }
-            }else{
-                return back();    
+            } else {
+                return back();
             }
-        }else{
+        } else {
             return back();
         }
 
@@ -119,9 +119,11 @@ class LeaveApprovalController extends Controller
         LeaveRequest::where('id', $id)->update([
             'status' => 'approved'
         ]);
-        
+
         $leave = LeaveApproval::with('leave_request')->where('leave_request_id', $id)->firstOrFail();
-        $this->deductLeave($leave->leave_request->user_id, $leave->leave_request->amount_days);
+        if ($leave->leave_request->type_leave_id === 1) {
+            $this->deductLeave($leave->leave_request->user_id, $leave->leave_request->amount_days);
+        }
 
         Session::flash('message', 'Leaves Successfully Approved');
 

@@ -13,7 +13,8 @@ class DashboardController extends Controller
 {
     function index() {
         $jabatan = User::with('employee', 'employee.position', 'employee.rank')->get();
-        $positions = Position::with('employee.users')->whereIn('type_position_id', [2,3])->get();
+        $positions = Position::with('employee.users', 'type_position')->whereIn('type_position_id', [2,3,4])->orderBy('id', 'asc')->get();
+        // $positions = DB::table('positions')->whereIn('type_position_id', [2,3])->orderBy('id')->get();
         $ranks = Rank::withCount('employee')
                         ->get()
                         ->groupBy('rank_group')

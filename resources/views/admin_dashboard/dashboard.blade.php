@@ -15,6 +15,15 @@
                     <div class="line"></div>
                 </div>
             </div>
+            {{-- <div class="row">
+                <div class="col-lg-4 col-md-4">
+                     <div class="card bg-white">
+                        <div class="card-body">
+                           <div id="calendar"></div>
+                        </div>
+                     </div>
+                  </div>
+            </div> --}}
             <div class="row">
                 {{-- <div class="col-lg-3 col-sm-6 col-12">
                     <div class="dash-widget">
@@ -117,30 +126,33 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-8 col-sm-12 col-12 d-flex">
+                <div class="col-lg-12 col-sm-12 col-12 d-flex">
                      <div class="card flex-fill">
                         <div class="card-header pb-0 d-flex justify-content-between align-items-center">
                            <h4 class="card-title mb-0">Pejabat Struktural</h4>
                         </div>
                         <div class="card-body">
-                           <div class="table-responsive dataview">
-                              <table class="table datatable text-center ">
-                                 <thead>
+                            <div class="table-responsive">
+                            <table class="table mb-0 text-center">
+                                <thead>
                                     <tr>
-                                       <th>Jabatan</th>
-                                       <th>Nama</th>
+                                        <th>Pangkat</th>
+                                        <th>Jabatan</th>
+                                        <th>NIP/Nama</th>
                                     </tr>
-                                 </thead>
-                                 <tbody>
-                                    @foreach ($positions as $position)
+                                </thead>
+                                <tbody>
+                                    @foreach ($positions as $item)
                                         <tr>
-                                            <td>{{ $position->position_name }}</td>
-                                            <td>{{ $position->employee[0]->nip }}<br>{{ $position->employee[0]->users->name }}</td>
+                                            <td>{{ $item->type_position->type_position }}</td>
+                                            <td>{{ $item->position_name }}</td>
+                                            @if ($item->employee->isNotEmpty())
+                                                <td>{{ $item->employee[0]->nip }}<br>{{ $item->employee[0]->users->name }}</td>
+                                            @endif
                                         </tr>
                                     @endforeach
-                                 </tbody>
-                              </table>
-                           </div>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
